@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEET PG Rankers Analysis - Top 1000</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+.interview-showcase {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+    padding: 30px;
+    border-radius: 20px;
+    margin: 30px 0;
+    border: 2px solid #ff6b6b;
+}
+
+.interview-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.interview-header h3 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.interview-header p {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.interview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.interview-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #ff6b6b;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.interview-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.interview-rank {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.interview-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.interview-plan {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.interview-college {
+    color: #555;
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.interview-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.status-completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-featured {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.interview-stats-mini {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.mini-stat {
+    text-align: center;
+}
+
+.mini-stat-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff6b6b;
+}
+
+.mini-stat-label {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.stat-card.interview-card {
+    border-left-color: #ff6b6b;
+}
+
+.stat-card.interview-card .stat-number {
+    color: #ff6b6b;
+}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a5cee4 32%, #5dbfed 20%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-left: 5px solid #4facfe;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4facfe;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #4facfe;
+            display: inline-block;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafbff;
+        }
+
+        .rank-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .rank-1-100 { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+        .rank-101-300 { background: linear-gradient(135deg, #4ecdc4, #44a08d); }
+        .rank-301-500 { background: linear-gradient(135deg, #45b7d1, #2980b9); }
+        .rank-501-1000 { background: linear-gradient(135deg, #96ceb4, #74b9ff); }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #4facfe;
+        }
+
+        .progress-bar {
+            background: #f0f0f0;
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.8s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .creative-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .rank-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 10px;
+            transition: transform 0.2s ease;
+        }
+
+        .rank-item:hover {
+            transform: scale(1.02);
+        }
+
+        .rank-label {
+            min-width: 120px;
+            font-weight: bold;
+        }
+
+        .rank-visual {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rank-count {
+            min-width: 60px;
+            text-align: right;
+            font-weight: bold;
+            color: #4facfe;
+        }
+
+        .center-visual {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .center-bubble {
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .center-bubble:hover {
+            transform: scale(1.1);
+        }
+
+        .bubble-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .plan-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .plan-card {
+            background: white;
+            padding: 25px 15px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border-top: 5px solid;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .f2f-card { border-top-color: #4facfe; }
+        .advance-card { border-top-color: #43e97b; }
+        .live-card { border-top-color: #667eea; }
+        .regular-card { border-top-color: #ff6b6b; }
+        .test-card { border-top-color: #feca57; }
+        .basic-card { border-top-color: #a55eea; }
+
+        .plan-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .plan-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .plan-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4facfe;
+            margin-bottom: 5px;
+        }
+
+        .plan-percent {
+            color: #666;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>NEET PG Rankers Analysis</h1>
+            <p>Top 1000 Rankers Performance Dashboard</p>
+        </div>
+
+        <div class="content">
+            <!-- Key Stats -->
+             
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">177</div>
+                    <div class="stat-label">Total Rankers (1-1000)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">114</div>
+                    <div class="stat-label">F2F Students</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">13</div>
+                    <div class="stat-label">F2F Centers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">64.4%</div>
+                    <div class="stat-label">F2F Success Rate</div>
+                </div>
+            </div>
+            <div class="interview-showcase">
+    <div class="interview-header">
+        <h3>🎥 DBMCI Interview Highlights 🏆</h3>
+        <p>Exclusive interviews with our top NEET PG rankers sharing their success stories</p>
+    </div>
+
+    <div class="interview-stats-mini">
+        <div class="mini-stat">
+            <div class="mini-stat-number">14</div>
+            <div class="mini-stat-label">Total Interviews</div>
+        </div>
+        <div class="mini-stat">
+            <div class="mini-stat-number">13</div>
+            <div class="mini-stat-label">Top 100 Rankers</div>
+        </div>
+        <div class="mini-stat">
+            <div class="mini-stat-number">86%</div>
+            <div class="mini-stat-label">F2F Students</div>
+        </div>
+        <div class="mini-stat">
+            <div class="mini-stat-number">4</div>
+            <div class="mini-stat-label">Different Plans</div>
+        </div>
+    </div>
+
+    <div class="interview-grid">
+        <div class="interview-card">
+            <div class="interview-rank">RANK 1</div>
+            <div class="interview-name">Pooshan Mohapatra</div>
+            <div class="interview-plan">📍 F2F Classes</div>
+            <div class="interview-college">🏥 SCB Medical College</div>
+            <div class="interview-status status-featured">⭐ TOP RANKER</div>
+        </div>
+
+        <div class="interview-card">
+            <div class="interview-rank">RANK 20</div>
+            <div class="interview-name">Ann Sebastian</div>
+            <div class="interview-plan">📍 F2F Classes</div>
+            <div class="interview-college">🏥 Mandya Institute of Medical Sciences</div>
+            <div class="interview-status status-completed">✓ Interview Completed</div>
+        </div>
+
+        <div class="interview-card">
+            <div class="interview-rank">RANK 29</div>
+            <div class="interview-name">Soumya A H</div>
+            <div class="interview-plan">📍 Regular Batch</div>
+            <div class="interview-college">🏥 Gulbarga Institute of Medical Sciences</div>
+            <div class="interview-status status-completed">✓ Interview Completed</div>
+        </div>
+
+        <div class="interview-card">
+            <div class="interview-rank">RANK 32</div>
+            <div class="interview-name">Harsh Goyal</div>
+            <div class="interview-plan">📍 F2F Classes</div>
+            <div class="interview-college">🏥 North Delhi Municipal Corporation Medical College</div>
+            <div class="interview-status status-completed">✓ Interview Completed</div>
+        </div>
+
+        <div class="interview-card">
+            <div class="interview-rank">RANK 35</div>
+            <div class="interview-name">Akif Nihal</div>
+            <div class="interview-plan">📍 F2F Classes</div>
+            <div class="interview-college">🏥 T D Medical College</div>
+            <div class="interview-status status-completed">✓ Interview Completed</div>
+        </div>
+
+        <div class="interview-card">
+            <div class="interview-rank">RANK 38</div>
+            <div class="interview-name">Chaitanya Joshy</div>
+            <div class="interview-plan">📍 F2F Classes</div>
+            <div class="interview-college">🏥 Government Medical College</div>
+            <div class="interview-status status-completed">✓ Interview Completed</div>
+        </div>
+
+        <div class="interview-card">
+            <div class="interview-rank">RANK 46</div>
+            <div class="interview-name">G V Guruprasad</div>
+            <div class="interview-plan">📍 F2F Classes</div>
+            <div class="interview-college">🏥 Chamrajanagar Institute of Medical Sciences</div>
+            <div class="interview-status status-completed">✓ Interview Completed</div>
+        </div>
+
+        <div class="interview-card">
+            <div class="interview-rank">RANK 64</div>
+            <div class="interview-name">Ishaan Mishra</div>
+            <div class="interview-plan">📍 F2F Classes</div>
+            <div class="interview-college">🏥 Vardhman Mahavir Medical College</div>
+            <div class="interview-status status-completed">✓ Interview Completed</div>
+        </div>
+
+        <div class="interview-card">
+            <div class="interview-rank">RANK 71</div>
+            <div class="interview-name">Devika N Nair</div>
+            <div class="interview-plan">📍 DBMCI LIVE 360°</div>
+            <div class="interview-college">🏥 All India Institute of Medical Sciences</div>
+            <div class="interview-status status-completed">✓ Interview Completed</div>
+        </div>
+
+        <div class="interview-card">
+            <div class="interview-rank">RANK 76</div>
+            <div class="interview-name">Sruthi Maddineni</div>
+            <div class="interview-plan">📍 F2F Classes</div>
+            <div class="interview-college">🏥 Guntur Medical College</div>
+            <div class="interview-status status-featured">⭐ Featured Interview</div>
+        </div>
+
+        <div class="interview-card">
+            <div class="interview-rank">RANK 79</div>
+            <div class="interview-name">Dr. Jes Maria Benny</div>
+            <div class="interview-plan">📍 DBMCI LIVE 360°</div>
+            <div class="interview-college">🏥 Government Medical College - Calicut</div>
+            <div class="interview-status status-completed">✓ Interview Completed</div>
+        </div>
+
+        <div class="interview-card">
+            <div class="interview-rank">RANK 86</div>
+            <div class="interview-name">Dr Yashika</div>
+            <div class="interview-plan">📍 F2F Classes</div>
+            <div class="interview-college">🏥 Lady Hardinge Medical College, New Delhi</div>
+            <div class="interview-status status-completed">✓ Interview Completed</div>
+        </div>
+
+        <div class="interview-card">
+            <div class="interview-rank">RANK 88</div>
+            <div class="interview-name">Nandita Balakrishnan</div>
+            <div class="interview-plan">📍 DBMCI LIVE 360°</div>
+            <div class="interview-college">🏥 Government Medical College - Kottayam</div>
+            <div class="interview-status status-completed">✓ Interview Completed</div>
+        </div>
+
+        <div class="interview-card">
+            <div class="interview-rank">RANK 992</div>
+            <div class="interview-name">Sangamesh M B</div>
+            <div class="interview-plan">📍 Test & Discussion</div>
+            <div class="interview-college">🏥 Gulbarga Institute of Medical Sciences</div>
+            <div class="interview-status status-completed">✓ Interview Completed</div>
+        </div>
+    </div>
+
+    <div class="highlight" style="margin-top: 25px; background: rgba(255, 255, 255, 0.9);">
+        <strong>🎯 Interview Impact:</strong> Our comprehensive interview series covers rankers from RANK 1 to RANK 992, showcasing diverse success stories across F2F Classes, LIVE 360°, Regular Batch, and Test & Discussion plans. These testimonials highlight DBMCI's effectiveness across different learning approaches.
+    </div>
+</div>
+
+<!-- UPDATE YOUR KEY STATS SECTION TO INCLUDE THESE TWO CARDS -->
+
+            <!-- Section 1: Rank Distribution -->
+           <div class="section">
+    <h2>1. Rank Distribution Analysis (1-1000)</h2>
+    
+    <div class="chart-container" style="width: 100%;">
+        <h3 style="text-align: center; margin-bottom: 20px; color: #333;">Rankers Distribution</h3>
+        <div class="creative-chart">
+            <div class="rank-item">
+                <div class="rank-badge rank-1-100">1-100</div>
+                <div class="rank-visual">
+                    <div class="progress-bar" style="flex: 1;">
+                        <div class="progress-fill rank-1-100" style="width: 14%;">14%</div>
+                    </div>
+                </div>
+                <div class="rank-count">25</div>
+            </div>
+            <div class="rank-item">
+                <div class="rank-badge rank-101-300">101-300</div>
+                <div class="rank-visual">
+                    <div class="progress-bar" style="flex: 1;">
+                        <div class="progress-fill rank-101-300" style="width: 22%;">22%</div>
+                    </div>
+                </div>
+                <div class="rank-count">39</div>
+            </div>
+            <div class="rank-item">
+                <div class="rank-badge rank-301-500">301-500</div>
+                <div class="rank-visual">
+                    <div class="progress-bar" style="flex: 1;">
+                        <div class="progress-fill rank-301-500" style="width: 21%;">21%</div>
+                    </div>
+                </div>
+                <div class="rank-count">37</div>
+            </div>
+            <div class="rank-item">
+                <div class="rank-badge rank-501-1000">501-1000</div>
+                <div class="rank-visual">
+                    <div class="progress-bar" style="flex: 1;">
+                        <div class="progress-fill rank-501-1000" style="width: 43%;">43%</div>
+                    </div>
+                </div>
+                <div class="rank-count">76</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+            <!-- Section 2: Plan Distribution -->
+            <div class="section">
+                <h2>2. Plan Distribution for Top 1000 Rankers</h2>
+                
+                <div class="grid-2">
+                    <div class="chart-container">
+                        <h3 style="text-align: center; margin-bottom: 30px; color: #333;">Plan Performance Overview</h3>
+                        
+                        <div class="plan-cards">
+                            <div class="plan-card f2f-card">
+                                <div class="plan-icon">🎯</div>
+                                <div class="plan-name">F2F Classes</div>
+                                <div class="plan-number">114</div>
+                                <div class="plan-percent">64.4%</div>
+                            </div>
+
+                            <div class="plan-card live-card">
+                                <div class="plan-icon">📺</div>
+                                <div class="plan-name">LIVE 360°/ Regular Batch</div>
+                                <div class="plan-number">24/14</div>
+                                <div class="plan-percent">14%/ 8%</div>
+                            </div>
+                            
+                            <div class="plan-card regular-card">
+                                <div class="plan-icon">✏️</div>
+                                <div class="plan-name">Test & Discussion</div>
+                                <div class="plan-number">9</div>
+                                <div class="plan-percent">5.1%</div>
+                            </div>
+
+                            <div class="plan-card advance-card">
+                                <div class="plan-icon">⭐</div>
+                                <div class="plan-name">Advance Plus</div>
+                                <div class="plan-number">7</div>
+                                <div class="plan-percent">4%</div>
+                            </div>
+                            <div class="plan-card test-card">
+                                <div class="plan-icon">📚</div>
+                                <div class="plan-name">Basic Plan</div>
+                                <div class="plan-number">6</div>
+                                <div class="plan-percent">3.4%</div>
+                            </div>
+
+                            <div class="plan-card basic-card">
+                                <div class="plan-icon">📖</div>
+                                <div class="plan-name">Foundation Batch</div>
+                                <div class="plan-number">3</div>
+                                <div class="plan-percent">1.7%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Plan Type</th>
+                                    <th>Count</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>F2F</strong></td>
+                                    <td><strong>114</strong></td>
+                                    <td>64.4%</td>
+                                </tr>
+                                <tr>
+                                    <td>LIVE 360°</td>
+                                    <td>24</td>
+                                    <td>14%</td>
+                                </tr>
+                                 <tr>
+                                    <td>Regular Batch</td>
+                                    <td>14</td>
+                                    <td>8%</td>
+                                </tr>
+                                <tr>
+                                    <td>Test & Discussion</td>
+                                    <td>9</td>
+                                    <td>5.1%</td>
+                                </tr>
+                                <tr>
+                                    <td>Advance Plus</td>
+                                    <td>7</td>
+                                    <td>4%</td>
+                                </tr>       
+                                <tr>
+                                    <td>Basic Plan</td>
+                                    <td>6</td>
+                                    <td>3.4%</td>
+                                </tr>
+                                <tr>
+                                    <td>Foundation Batch</td>
+                                    <td>3</td>
+                                    <td>1.7%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="highlight">
+                    <strong>Key Insight:</strong> F2F (Face-to-Face) classes dominate with 58.3% of top 1000 rankers, demonstrating superior effectiveness of direct classroom interaction.
+                </div>
+            </div>
+
+            <!-- Section 3: F2F Center Analysis -->
+            <div class="section">
+    <h2>3. F2F Centers Performance Analysis</h2>
+    
+    <div class="chart-container">
+        <h3 style="text-align: center; margin-bottom: 20px; color: #333;">F2F Centers - Bubble View</h3>
+        <div class="center-visual">
+            <div class="center-bubble" style="background: linear-gradient(135deg, #45b7d1, #2980b9); font-size: 1.2rem;">
+                Hyderabad
+                <div class="bubble-count">36</div>
+            </div>
+            <div class="center-bubble" style="background: linear-gradient(135deg, #ff6b6b, #ee5a24); font-size: 1.2rem;">
+                Calicut
+                <div class="bubble-count">26</div>
+            </div>
+            <div class="center-bubble" style="background: linear-gradient(135deg, #4ecdc4, #44a08d); font-size: 1.1rem;">
+                Bangalore
+                <div class="bubble-count">21</div>
+            </div>
+            <div class="center-bubble" style="background: linear-gradient(135deg, #96ceb4, #74b9ff); font-size: 1.0rem;">
+                Delhi
+                <div class="bubble-count">14</div>
+            </div>
+            <div class="center-bubble" style="background: linear-gradient(135deg, #a55eea, #26de81);">
+                Ahmedabad
+                <div class="bubble-count">5</div>
+            </div>
+            <div class="center-bubble" style="background: linear-gradient(135deg, #feca57, #ff9ff3);">
+                Bhubaneswar
+                <div class="bubble-count">4</div>
+            </div>
+            <div class="center-bubble" style="background: linear-gradient(135deg, #54a0ff, #5f27cd);">
+                Kochi
+                <div class="bubble-count">3</div>
+            </div>
+            <div class="center-bubble" style="background: linear-gradient(135deg, #fd79a8, #fdcb6e);">
+                Lucknow
+                <div class="bubble-count">2</div>
+            </div>
+            <div class="center-bubble" style="background: linear-gradient(135deg, #00d2d3, #ff9f43);">
+                Chennai
+                <div class="bubble-count">2</div>
+            </div>
+            <div class="center-bubble" style="background: linear-gradient(135deg, #e17055, #6c5ce7);">
+                Kottayam
+                <div class="bubble-count">1</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                <div class="chart-container">
+                    <h3 style="text-align: center; margin-bottom: 20px; color: #333;">Detailed F2F Center Performance</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="centerChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>F2F Center</th>
+                                <th>Number of Rankers</th>
+                                <th>% of F2F Total</th>
+                                <th>Best Rank</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                             <tr>
+                                <td><strong>Hyderabad</strong></td>
+                                <td><strong>36</strong></td>
+                                <td>37.4%</td>
+                                <td>76</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Calicut</strong></td>
+                                <td><strong>26</strong></td>
+                                <td>26.5%</td>
+                                <td>20</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bangalore</strong></td>
+                                <td><strong>21</strong></td>
+                                <td>21.4%</td>
+                                <td>82</td>
+                            </tr>
+                           
+                            <tr>
+                                <td><strong>Delhi</strong></td>
+                                <td><strong>14</strong></td>
+                                <td>14.8%</td>
+                                <td>32</td>
+                            </tr>
+                            <tr>
+                                <td>Bhubaneswar</td>
+                                <td>5</td>
+                                <td>5.4%</td>
+                                <td>1</td>
+                            </tr>
+                             <tr>
+                                <td>Ahmedabad</td>
+                                <td>5</td>
+                                <td>4.6%</td>
+                                <td>389</td>
+                            </tr>
+                            <tr>
+                                <td>Kochi</td>
+                                <td>3</td>
+                                <td>3.8%</td>
+                                <td>156</td>
+                            </tr>
+                            <tr>
+                                <td>Chennai</td>
+                                <td>2</td>
+                                <td>2.6%</td>
+                                <td>545</td>
+                            </tr>
+                           
+                            <tr>
+                                <td>Lucknow</td>
+                                <td>2</td>
+                                <td>2.6%</td>
+                                <td>453</td>
+                            </tr>
+                            <tr>
+                                <td>Thrissur</td>
+                                <td>1</td>
+                                <td>1.0%</td>
+                                <td>476</td>
+                            </tr>
+                          
+
+
+                    </tbody>
+                    </table>
+                </div>
+
+                <div class="highlight">
+                    <strong>Center Performance Highlights:</strong><br>
+                    • <strong>Hyderabad</strong> leads with 36 rankers (37.5%) including Rank 76<br>
+                    • <strong>Bhubaneswar</strong> produced the RANK 1 student 🏆<br>
+                    • Top 4 centers account for 80.6% of all F2F rankers<br>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- Screenshots Showcase Section -->
+<div style="margin-top: 40px; padding: 20px;">
+  <h2 style="color: #00060c; text-align: center; font-size: 28px; margin-bottom: 30px;">Screenshots Showcase</h2>
+
+  <!-- Image Showcase -->
+  <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 50px; flex-wrap: wrap;">
+    <img src="1.png" alt="Screenshot 1" style="width: 950px; border-radius: 15px; box-shadow: 0 6px 15px rgba(0,0,0,0.2);">
+    <img src="2.png" alt="Screenshot 2" style="width: 750px; border-radius: 15px; box-shadow: 0 6px 15px rgba(0,0,0,0.2);">
+    <img src="3.png" alt="Screenshot 3" style="width: 950px; border-radius: 15px; box-shadow: 0 6px 15px rgba(0,0,0,0.2);">
+  </div>
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto auto; gap: 30px; max-width: 1200px; margin: 0 auto; padding: 20px;">
+
+  <div style="background: linear-gradient(135deg, #ff416c, #ff4757, #ff3742); color: white; padding: 30px; border-radius: 25px; box-shadow: 0 20px 40px rgba(255,65,108,0.4); position: relative; overflow: hidden; transform: rotate(-1deg);">
+    <div style="position: absolute; top: -60px; right: -60px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(255,255,255,0.2), transparent); border-radius: 50%;"></div>
+    <div style="font-size: 17px; line-height: 1.7; position: relative; z-index: 2;">
+      I am from <span style="font-weight: 800; color: #ffd700;">bhatia Hyderabad</span> branch SSP1 batch face to face , Thank you so much to all faculty of <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 15px; font-weight: 700;">bhatia</span> and team <span style="color: #ffd700; font-weight: 800;">DBMCI</span> for helping to reach this <span style="font-size: 20px; font-weight: 900; color: #ffd700;">biggest achievement</span> of life ❤️❤️
+    </div>
+  </div>
+
+  <div style="background: linear-gradient(135deg, #00d2ff, #3a7bd5); color: white; padding: 30px; border-radius: 25px; box-shadow: 0 20px 40px rgba(0,210,255,0.4); position: relative; overflow: hidden; transform: rotate(1deg);">
+    <div style="position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; background: rgba(255,215,0,0.8); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #333;">🏆</div>
+    <div style="font-size: 17px; line-height: 1.7; position: relative; z-index: 2;">
+      Got a rank of <span style="font-size: 24px; font-weight: 900; color: #ffd700; border: 2px solid #ffd700; padding: 2px 12px; border-radius: 20px;">1954</span> in <span style="font-weight: 800;">neetpg 2024</span>...<br>
+      But bcz of some bad decision I had to leave the seat which I got...<br>
+      I want to thank the <span style="color: #ffd700; font-weight: 800;">bhatia</span> for their <span style="font-weight: 700; text-decoration: underline;">concised and crisp notes</span> which made me read and get a gud rank in just <span style="background: rgba(255,215,0,0.3); padding: 2px 8px; border-radius: 12px; font-weight: 800;">45 days</span>....
+    </div>
+  </div>
+
+  <div style="background: linear-gradient(135deg, #a8e6cf, #7fcdcd); color: #2c3e50; padding: 30px; border-radius: 25px; box-shadow: 0 20px 40px rgba(168,230,207,0.5); position: relative; overflow: hidden;">
+    <div style="position: absolute; bottom: 20px; right: 20px; font-size: 30px; opacity: 0.6;">🙏</div>
+    <div style="font-size: 17px; line-height: 1.7; font-weight: 500; position: relative; z-index: 2;">
+      Thank u so much <span style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 2px 8px; border-radius: 12px; font-weight: 800;">Dbmci team</span> for helping achieving my <span style="color: #e74c3c; font-weight: 800;">goal</span> ....thank u <span style="font-weight: 700; color: #2980b9;">Dr.rajat sir, Dr.Praveen sir,Dr. ramyashree ma'am,Dr.Themeem sir,Dr.Nasir sir,Dr.Rajesh sir,Dr.vishwajeet sir,Dr Anish sir,Dr.jai sir,Dr.saurv sir,Dr.Ashwani sir</span>,....Thank u <span style="font-size: 20px; font-weight: 900; color: #e74c3c;">all</span>...
+    </div>
+  </div>
+
+  <div style="background: linear-gradient(135deg, #ffeaa7, #e17055); color: white; padding: 30px; border-radius: 25px; box-shadow: 0 20px 40px rgba(255,234,167,0.5); position: relative; overflow: hidden;">
+    <div style="position: absolute; top: 15px; left: 15px; width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">📚</div>
+    <div style="font-size: 17px; line-height: 1.7; font-weight: 500; position: relative; z-index: 2; margin-top: 20px;">
+      Thanks to all the faculty for everything.I jumped from <span style="background: rgba(231,76,60,0.8); padding: 2px 8px; border-radius: 15px; font-weight: 800; color: white;">1.3 lacs rank</span> from last year to <span style="background: rgba(46,204,113,0.9); padding: 2px 12px; border-radius: 15px; font-weight: 800; color: white; font-size: 19px;">19k</span> this year,only made possible by our <span style="font-weight: 800; color: #ffd700;">sweet faculty</span>.Special thanks to <span style="font-weight: 900; background: rgba(255,255,255,0.3); padding: 2px 8px; border-radius: 12px;">Dr.Jai Sir</span>, for making me fall in love with <span style="color: #e74c3c; font-weight: 800; font-size: 18px;">surgery</span>.
+    </div>
+  </div>
+
+  <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px; border-radius: 25px; box-shadow: 0 25px 50px rgba(102,126,234,0.4); position: relative; overflow: hidden; grid-column: span 2;">
+    <div style="position: absolute; top: 20px; right: 30px; background: rgba(255,215,0,0.9); padding: 8px 16px; border-radius: 20px; color: #333; font-weight: 800; font-size: 14px;">SUCCESS STORY</div>
+    <div style="font-size: 16px; line-height: 1.6; font-weight: 500; white-space: pre-line; position: relative; z-index: 2; margin-top: 20px;">Hello sir/mam,
+Good evening.
+
+Myself <span style="font-weight: 800; color: #ffd700;">Amar</span>, (UG=2015 batch) is glad to inform you that I got <span style="font-size: 22px; font-weight: 900; background: rgba(255,215,0,0.9); color: #333; padding: 3px 12px; border-radius: 20px;">6885 rank</span> in 3rd drop. 
+
+<span style="background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 15px; font-weight: 700;">DBMCI organization</span> and faculty have always helped me right from my 1st drop.
+NEET PG ranks:
+2021= 77,653 
+2022 = 42,010
+2023 = 22,653 
+2024 = 17,035 
+<span style="color: #2ed573; font-weight: 900; font-size: 18px; background: rgba(46,213,115,0.2); padding: 2px 8px; border-radius: 12px;">2025 = 6885</span>
+
+I wanted only one branch, that's <span style="font-size: 19px; font-weight: 900; color: #ffd700;">MEDICINE</span> so I took 3 drops.
+1st two NEET PGs, i was working with hectic schedule so I didn't study during that time.
+I am very much thankful to all the <span style="color: #a8e6cf; font-weight: 800;">DBMCI faculty</span> for helping me.
+
+Finally I am happy😊
+
+Thank you sir/mam.
+🙏🏻😊</div>
+  </div>
+
+</div>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+<script>
+    // Register the datalabels plugin
+    Chart.register(ChartDataLabels);
+
+    const ctx = document.getElementById('centerChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+                'Hyderabad',
+                'Calicut',
+                'Bangalore',
+                'Delhi',
+                'Ahmedabad',
+                'Bhuabaneshwar',
+                'Kochi',
+                'Lucknow',
+                'Chennai',
+                'Kottayam'
+            ],
+            datasets: [{
+                label: 'Number of Rankers',
+                data: [36, 26, 21, 14, 5, 4, 3, 2, 2, 1],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 159, 64, 0.8)',
+                    'rgba(5, 99, 132, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(54, 205, 86, 0.8)',
+                    'rgba(201, 203, 207, 0.8)',
+                    'rgba(10, 99, 71, 0.8)', // Lucknow
+                    'rgba(10, 99, 71, 0.8)',
+                    'rgba(100, 149, 237, 0.8)'
+                ],
+                borderRadius: 8,
+                barThickness: 30
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                datalabels: {
+                    color: '#fff',
+                    anchor: 'end',
+                    align: 'start',
+                    font: { weight: 'bold' },
+                    formatter: (value) => value
+                }
+            },
+            scales: {
+                x: {
+                    title: { display: true, text: 'Number of Rankers' },
+                    beginAtZero: true
+                },
+                y: {
+                    ticks: { font: { weight: 'bold' } }
+                }
+            }
+        }
+    });
+</script>
